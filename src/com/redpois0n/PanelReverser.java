@@ -325,18 +325,21 @@ public class PanelReverser extends JPanel {
 				}
 			}
 			
-			String key = Util.readString(zip.getInputStream(entryKey));
+			InputStream keyInputStream = zip.getInputStream(entryKey);
 			
-			String[] kargs = key.trim().split("\n");
-			key = kargs[0].trim();
+			byte[] key = new byte[16];
 			
+			for (int i = 0; i < key.length; i++) {
+				key[i] = (byte) keyInputStream.read();
+			}
+						
 			InputStream in = zip.getInputStream(entryDat);
 			OutputStream out = new FileOutputStream(new File(file.getParent(), "Decrypted Dropper.jar"));
-			Cipher dcipher = Cipher.getInstance("DESede");
+			Cipher dcipher = Cipher.getInstance("AES");
 
 			byte[] buffer = new byte[1024];
 			
-			Key sks = new SecretKeySpec(key.getBytes("UTF-8"), "DESede");
+			Key sks = new SecretKeySpec(key, "AES");
 			dcipher.init(Cipher.DECRYPT_MODE, sks);
 			in = new CipherInputStream(in, dcipher);
 			int numRead = 0;
