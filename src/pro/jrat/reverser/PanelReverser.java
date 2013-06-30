@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextPane;
 
 @SuppressWarnings("serial")
 public class PanelReverser extends JPanel {
@@ -41,8 +42,7 @@ public class PanelReverser extends JPanel {
 	private JTextField txtFile;
 	private JTable table;
 	private JTextField txtKey;
-	private JTextField txtConfigEn;
-	private JTextField txtConfig;
+	private JTextPane txtConfig;
 
 	public DefaultTableModel getModel() {
 		return (DefaultTableModel)table.getModel();
@@ -132,34 +132,26 @@ public class PanelReverser extends JPanel {
 					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		
-		JLabel lblKey = new JLabel("Key:");
+		JLabel lblKey = new JLabel("Key Hex:");
 		
 		txtKey = new JTextField();
 		txtKey.setColumns(10);
 		
-		JLabel lblConfigencrypted = new JLabel("Config: (Encrypted)");
+		JLabel lblConfigdecrypted = new JLabel("Config:");
 		
-		txtConfigEn = new JTextField();
-		txtConfigEn.setColumns(10);
-		
-		JLabel lblConfigdecrypted = new JLabel("Config: (Decrypted)");
-		
-		txtConfig = new JTextField();
-		txtConfig.setColumns(10);
+		JScrollPane scrollPane_1 = new JScrollPane();
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_2.createSequentialGroup()
-							.addComponent(lblKey)
-							.addGap(18)
-							.addComponent(txtKey, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
-						.addComponent(lblConfigencrypted)
-						.addComponent(txtConfigEn, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblConfigdecrypted)
-						.addComponent(txtConfig, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblKey))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+						.addComponent(txtKey, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
@@ -167,18 +159,17 @@ public class PanelReverser extends JPanel {
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblKey)
-						.addComponent(txtKey, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtKey, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblKey))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblConfigencrypted)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtConfigEn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblConfigdecrypted)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(txtConfig, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(27, Short.MAX_VALUE))
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblConfigdecrypted))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		
+		txtConfig = new JTextPane();
+		scrollPane_1.setViewportView(txtConfig);
 		panel_2.setLayout(gl_panel_2);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -265,6 +256,9 @@ public class PanelReverser extends JPanel {
 	}
 	
 	public void load(File file) {
+		while (getModel().getRowCount() > 0) {
+			getModel().removeRow(0);
+		}
 		try {
 			ZipFile zip = new ZipFile(file);
 			
@@ -286,6 +280,8 @@ public class PanelReverser extends JPanel {
 			
 			byte[] key = new byte[keyFileInputStream.available()];
 		    keyFileInputStream.read(key);
+		    
+		    txtKey.setText(Hex.encode(key));
 			
 		    InputStream configFileInputStream = zip.getInputStream(entryConfig);
 			
@@ -296,7 +292,10 @@ public class PanelReverser extends JPanel {
 			
 			String sConfig = new String(config);
 			
-			txtConfig.setText(sConfig);
+			String[] configLines = sConfig.split("SPLIT");
+			for (String str : configLines) {
+				txtConfig.getDocument().insertString(txtConfig.getDocument().getLength(), str.trim() + "\n\r", null);
+			}
 			
 			String[] kv = sConfig.split("SPLIT");
 			
