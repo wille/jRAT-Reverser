@@ -282,16 +282,23 @@ public class PanelReverser extends JPanel {
 				}
 			}
 			
-			String key = Util.readString(zip.getInputStream(entryKey));
-			txtKey.setText(key);
+			InputStream keyFileInputStream = zip.getInputStream(entryKey);
 			
-			String config = Util.readString(zip.getInputStream(entryConfig));
-			txtConfigEn.setText(config);
+			byte[] key = new byte[keyFileInputStream.available()];
+		    keyFileInputStream.read(key);
+			
+		    InputStream configFileInputStream = zip.getInputStream(entryConfig);
+			
+			byte[] config = new byte[configFileInputStream.available()];
+			configFileInputStream.read(key);
 
-			config = StringCrypter.decrypt(key, config);
-			txtConfig.setText(config);
+			config = StringCrypter.decrypt(config, key);
 			
-			String[] kv = config.split("SPLIT");
+			String sConfig = new String(config);
+			
+			txtConfig.setText(sConfig);
+			
+			String[] kv = sConfig.split("SPLIT");
 			
 			for (String str : kv) {
 				String[] split = str.split("=");
