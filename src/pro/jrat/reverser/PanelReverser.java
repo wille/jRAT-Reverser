@@ -1,4 +1,4 @@
-package com.redpois0n;
+package pro.jrat.reverser;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -290,9 +290,9 @@ public class PanelReverser extends JPanel {
 		    InputStream configFileInputStream = zip.getInputStream(entryConfig);
 			
 			byte[] config = new byte[configFileInputStream.available()];
-			configFileInputStream.read(key);
+			configFileInputStream.read(config);
 
-			config = StringCrypter.decrypt(config, key);
+			config = Crypto.decrypt(config, key);
 			
 			String sConfig = new String(config);
 			

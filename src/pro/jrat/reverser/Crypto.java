@@ -1,9 +1,9 @@
-package com.redpois0n;
+package pro.jrat.reverser;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-public class StringCrypter {
+public class Crypto {
 	
 	public static final String ENCRYPTION_ALGORITHM = "AES";
 	

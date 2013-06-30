@@ -1,4 +1,4 @@
-package com.redpois0n;
+package pro.jrat.reverser;
 
 import java.awt.BorderLayout;
 import java.awt.Toolkit;

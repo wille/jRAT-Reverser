@@ -1,4 +1,4 @@
-package com.redpois0n;
+package pro.jrat.reverser;
 
 import java.io.IOException;
 import java.io.InputStream;
