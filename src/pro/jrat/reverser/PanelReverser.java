@@ -135,6 +135,7 @@ public class PanelReverser extends JPanel {
 		JLabel lblKey = new JLabel("Key Hex:");
 		
 		txtKey = new JTextField();
+		txtKey.setEditable(false);
 		txtKey.setColumns(10);
 		
 		JLabel lblConfigdecrypted = new JLabel("Config:");
@@ -169,6 +170,7 @@ public class PanelReverser extends JPanel {
 		);
 		
 		txtConfig = new JTextPane();
+		txtConfig.setEditable(false);
 		scrollPane_1.setViewportView(txtConfig);
 		panel_2.setLayout(gl_panel_2);
 		
@@ -308,8 +310,8 @@ public class PanelReverser extends JPanel {
 			
 			zip.close();
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Failed to load:\n\n" + ex.getClass().getSimpleName() + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Failed to load:\n\n" + ex.getClass().getSimpleName() + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -359,8 +361,8 @@ public class PanelReverser extends JPanel {
 			
 			JOptionPane.showMessageDialog(null, "Decrypted the server from dropper to\n" + new File(file.getParent(), "Decrypted Server.jar").getAbsolutePath(), "Reverser", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Failed to decrypt server from dropper:\n\n" + ex.getClass().getSimpleName() + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Failed to decrypt server from dropper:\n\n" + ex.getClass().getSimpleName() + ": " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
