@@ -326,9 +326,9 @@ public class PanelReverser extends JPanel {
 			
 			while (entries.hasMoreElements()) {
 				ZipEntry entry = entries.nextElement();
-				if (entry.getName().equals("key.dat")) {
+				if (entry.getName().equals("k")) {
 					entryKey = entry;
-				} else if (entry.getName().equals("enc.dat")) {
+				} else if (entry.getName().equals("e")) {
 					entryDat = entry;
 				}
 			}
