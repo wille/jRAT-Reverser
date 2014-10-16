@@ -1,4 +1,4 @@
-package pro.jrat.reverser;
+package su.jrat.reverser;
 
 import javax.swing.UIManager;
 

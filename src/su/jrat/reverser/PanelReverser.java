@@ -1,4 +1,4 @@
-package pro.jrat.reverser;
+package su.jrat.reverser;
 
 import java.awt.Color;
 import java.awt.Desktop;

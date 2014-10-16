@@ -1,4 +1,4 @@
-package pro.jrat.reverser;
+package su.jrat.reverser;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
